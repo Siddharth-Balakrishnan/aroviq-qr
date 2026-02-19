@@ -3,6 +3,8 @@ import classNames from "classnames";
 import type { QRConfig } from "../types/qrTypes";
 import { ThemeSelector } from "./ThemeSelector";
 import { LogoUploader } from "./LogoUploader";
+import { ColorPicker } from "./ColorPicker";
+import aroviqHeaderLogo from "../assets/Aroviq_Logo.png";
 
 interface ControlPanelProps {
     config: QRConfig;
@@ -17,9 +19,11 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ config, setConfig })
     return (
         <div className="flex flex-col gap-8 p-6 lg:p-8 bg-white/50 backdrop-blur-xl border-r border-gray-100 h-full overflow-y-auto no-scrollbar">
             <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-200">
-                    Q
-                </div>
+                <img
+                    src={aroviqHeaderLogo}
+                    alt="Aroviq Logo"
+                    className="h-8 w-auto object-contain"
+                />
                 <div>
                     <h1 className="text-xl font-bold text-gray-900 tracking-tight leading-none">
                         Aroviq
@@ -53,28 +57,17 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ config, setConfig })
                 <h3 className="uppercase text-xs font-bold text-gray-400 tracking-wider">Appearance</h3>
 
                 {/* Colors */}
-                <div className="grid grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                    <div>
-                        <label className="block text-xs font-medium text-gray-500 mb-2">Foreground</label>
-                        <div className="flex items-center gap-3">
-                            <div
-                                className="w-8 h-8 rounded-full shadow-inner border border-gray-200 overflow-hidden relative cursor-pointer"
-                                style={{ backgroundColor: config.fgColor }}
-                            >
-                                <input
-                                    type="color"
-                                    value={config.fgColor}
-                                    onChange={(e) => handleChange("fgColor", e.target.value)}
-                                    className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                                />
-                            </div>
-                            <span className="text-xs font-mono text-gray-400">{config.fgColor}</span>
-                        </div>
-                    </div>
+                <div className="grid grid-cols-1 gap-6 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+
+                    <ColorPicker
+                        label="Foreground Color"
+                        value={config.fgColor}
+                        onChange={(color) => handleChange("fgColor", color)}
+                    />
 
                     <div>
-                        <label className="block text-xs font-medium text-gray-500 mb-2">Background</label>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-between mb-2">
+                            <label className="text-xs font-medium text-gray-500">Background Color</label>
                             <label className="relative inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
@@ -86,20 +79,13 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ config, setConfig })
                                 <span className="ml-2 text-xs font-medium text-gray-600">Transparent</span>
                             </label>
                         </div>
+
                         {config.bgColor !== "transparent" && (
-                            <div className="mt-2 flex items-center gap-2">
-                                <div
-                                    className="w-6 h-6 rounded-full shadow-inner border border-gray-200 overflow-hidden relative cursor-pointer"
-                                    style={{ backgroundColor: config.bgColor }}
-                                >
-                                    <input
-                                        type="color"
-                                        value={config.bgColor}
-                                        onChange={(e) => handleChange("bgColor", e.target.value)}
-                                        className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                                    />
-                                </div>
-                            </div>
+                            <ColorPicker
+                                label=""
+                                value={config.bgColor}
+                                onChange={(color) => handleChange("bgColor", color)}
+                            />
                         )}
                     </div>
                 </div>

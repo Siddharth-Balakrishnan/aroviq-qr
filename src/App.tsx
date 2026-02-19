@@ -7,7 +7,7 @@ import type { QRConfig } from "./types/qrTypes";
 
 function App() {
   const [config, setConfig] = useState<QRConfig>({
-    data: "https://aroviq.com",
+    data: "https://deshran.tech",
     size: 512, // Default to DeshRan preset size
     margin: 16,
     dotType: "rounded",
