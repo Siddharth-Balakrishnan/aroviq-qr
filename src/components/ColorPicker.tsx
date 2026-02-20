@@ -70,7 +70,24 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
             setHexInput(normalized.toUpperCase());
             onChange(normalized);
         }
-    }
+    };
+
+    const handleEyeDropper = async () => {
+        if ('EyeDropper' in window && window.EyeDropper) {
+            try {
+                const eyeDropper = new window.EyeDropper();
+                const result = await eyeDropper.open();
+                if (result && result.sRGBHex) {
+                    const color = result.sRGBHex;
+                    setHexInput(color.toUpperCase());
+                    onChange(color);
+                    setError(false);
+                }
+            } catch (err) {
+                console.warn("EyeDropper API cancelled or failed:", err);
+            }
+        }
+    };
 
     return (
         <div>
@@ -113,6 +130,17 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
                         placeholder="000000"
                     />
                 </div>
+
+                {/* Pick from screen button */}
+                <button
+                    type="button"
+                    onClick={handleEyeDropper}
+                    disabled={!('EyeDropper' in window)}
+                    title={'EyeDropper' in window ? "Pick color from screen" : "Supported in Chromium browsers only"}
+                    className="flex-shrink-0 px-3 py-2 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                    Pick from screen
+                </button>
             </div>
             {error && <p className="text-[10px] text-red-500 mt-1 pl-1">Invalid HEX code</p>}
         </div>
